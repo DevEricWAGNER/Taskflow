@@ -12,6 +12,34 @@ import React, { useEffect, useState } from 'react'
 import EmptyState from '@/app/components/EmptyState'
 import TaskComponent from '@/app/components/TaskComponent';
 import { toast } from 'react-toastify';
+import { GetServerSideProps } from 'next';
+
+interface PageProps {
+    params: {
+        projectId: string;
+    };
+}
+const ProjectPage: React.FC<PageProps> = ({ params }) => {
+    const { projectId } = params;
+  
+    return (
+        <div>
+            <h1>Project ID: {projectId}</h1>
+        </div>
+    );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { projectId } = context.params as { projectId: string };
+  
+    return {
+      props: {
+        params: {
+          projectId,
+        },
+      },
+    };
+  };
 
 const page = ({ params }: { params: { projectId: string } }) => {
 
@@ -51,7 +79,7 @@ const page = ({ params }: { params: { projectId: string } }) => {
                 todo: project.tasks.filter(task => task.status === "To Do").length,
                 inProgress: project.tasks.filter(task => task.status == 'In Progress').length,
                 done: project.tasks.filter(task => task.status == 'Done').length,
-                assigned: project.tasks.filter(task => task?.user?.email == email).length,
+                assigned: project.tasks.filter(task => task?.user?.email === email).length,
             }
             setTaskCounts(counts) 
         }
