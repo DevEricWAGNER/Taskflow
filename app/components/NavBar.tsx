@@ -6,7 +6,7 @@ import { FolderGit2, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { checkAddUser } from '../actions';
+import { checkAndAddUser } from '../actions';
 
 const Navbar = () => {
     const {user} = useUser();
@@ -24,7 +24,7 @@ const Navbar = () => {
 
     useEffect(() => {
         if (user?.primaryEmailAddress?.emailAddress && user?.fullName) {
-            checkAddUser(user?.primaryEmailAddress?.emailAddress, user?.fullName);
+            checkAndAddUser(user?.primaryEmailAddress?.emailAddress, user?.fullName);
         }
     }, [user]);
 
