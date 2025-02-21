@@ -1,7 +1,6 @@
 "use client";
 
 import { UserButton, useUser } from '@clerk/nextjs';
-import { cp } from 'fs';
 import { FolderGit2, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

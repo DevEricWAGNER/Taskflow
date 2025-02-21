@@ -47,7 +47,7 @@ const ProjectComponent: FC<ProjectProps> = ({ project, admin, style, onDelete })
                 toast.success("Code d'invitation copié")
             }
         } catch (error) {
-            toast.error("Erreur lors de la copie du code d'invitation.")
+            toast.error("Erreur lors de la copie du code d'invitation." + error)
         }
     }
 
