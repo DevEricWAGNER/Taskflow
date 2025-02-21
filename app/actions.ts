@@ -62,3 +62,62 @@ export async function createProject(name: string, description: string, email: st
         throw new Error("Erreur lors de la création du projet.");
     }
 }
+
+export async function getProjectsCreatedByUser(email: string) {
+    try 
+    {
+        const projects = await prisma.project.findMany({
+            where: {
+                createdBy: {
+                    email: email
+                }
+            },
+            include: {
+                tasks: {
+                    include: {
+                        user: true,
+                        createdBy: true
+                    }
+                },
+                users: {
+                    select: {
+                        user : {
+                            select: {
+                                id: true,
+                                email: true,
+                                name: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        const formattedProjects = projects.map((project) => ({
+            ...project,
+            users: project.users.map((useEntry) => useEntry.user)
+        }))
+
+        return formattedProjects;
+
+    }
+    catch (error) 
+    {
+        console.error("Erreur lors de la récupération des projets : ", error);
+        throw new Error("Erreur lors de la récupération des projets.");
+    }
+}
+
+export async function deleteProjectById(projectId: string) {
+    try {
+        await prisma.project.delete({
+            where: {
+                id: projectId
+            }
+        })
+        console.log(`Projet avec l'ID ${projectId} supprimé avec succès.`);
+    } catch (error) {
+        console.error(error)
+        throw new Error
+    }
+}

@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" data-theme="retro">
+      <html lang="en" data-theme="light">
         <body
           className={``}
         >
