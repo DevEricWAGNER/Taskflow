@@ -1,14 +1,15 @@
 "use client";
 
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, useUser } from '@clerk/nextjs';
 import { cp } from 'fs';
 import { FolderGit2, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { checkAddUser } from '../actions';
 
 const Navbar = () => {
-
+    const {user} = useUser();
     const [menuOpen, setMenuOpen] = useState(false);
     const pathname = usePathname();
 
@@ -20,6 +21,12 @@ const Navbar = () => {
             href: "/", label: "Mes projets"
         }
     ]
+
+    useEffect(() => {
+        if (user?.primaryEmailAddress?.emailAddress && user?.fullName) {
+            checkAddUser(user?.primaryEmailAddress?.emailAddress, user?.fullName);
+        }
+    }, [user]);
 
     const renderLinks = (classNames : string) => {
         return navLinks.map(({href, label}) => {
